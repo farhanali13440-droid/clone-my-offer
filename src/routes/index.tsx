@@ -30,7 +30,7 @@ const productStack = { url: "/assets/product-stack.png" };
 const instructorImage = { url: "/assets/farhan-instructor.jpeg" };
 
 const PRODUCT_NAME = "The Art of Habits & Discipline Mastery Seminar";
-const TRAINING_DATE = "Sunday | 07-June-2026";
+const TRAINING_DATE = "Sunday | 12-July-2026";
 const TRAINING_TIME = "05:00 PM to 8:00 PM";
 const PRICE = 999;
 
