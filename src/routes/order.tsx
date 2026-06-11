@@ -12,7 +12,7 @@ const bumpPornRecovery = { url: "/assets/bump-strategy.png" };
 const bumpReelsRecovery = { url: "/assets/bump-prompts.png" };
 
 const PRODUCT_NAME = "The Art of Habits & Discipline Mastery Seminar";
-const TRAINING_DATE = "Sunday | 07-June-2026";
+const TRAINING_DATE = "Sunday | 12-July-2026";
 const TRAINING_TIME = "05:00 PM to 8:00 PM";
 const MAIN_PRODUCT = { title: PRODUCT_NAME, price: 999 };
 
