@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "c48c45dc-2ab6-4a29-965c-a32cd1afbc8d",
-  "project_id": "f4d1f203-f6d4-43ac-a3d3-5542ad9dcf1a",
-  "url": "/__l5e/assets-v1/c48c45dc-2ab6-4a29-965c-a32cd1afbc8d/farhan-instructor.jpeg",
-  "r2_key": "a/v1/f4d1f203-f6d4-43ac-a3d3-5542ad9dcf1a/c48c45dc-2ab6-4a29-965c-a32cd1afbc8d/farhan-instructor.jpeg",
-  "original_filename": "farhan-instructor.jpeg",
-  "size": 59810,
   "content_type": "image/jpeg",
-  "created_at": "2026-06-10T16:25:35Z"
+  "created_at": "2026-06-10T16:25:35Z",
+  "original_filename": "farhan-instructor.jpeg",
+  "project_id": "46041bbc-693f-4074-aa46-940675f039f1",
+  "r2_key": "a/v1/46041bbc-693f-4074-aa46-940675f039f1/c48c45dc-2ab6-4a29-965c-a32cd1afbc8d/farhan-instructor.jpeg",
+  "size": 59810,
+  "url": "/__l5e/assets-v1/c48c45dc-2ab6-4a29-965c-a32cd1afbc8d/farhan-instructor.jpeg",
+  "version": 1
 }

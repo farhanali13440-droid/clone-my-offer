@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "d4b7429f-1234-48cb-96cf-4875f08615e3",
-  "project_id": "f4d1f203-f6d4-43ac-a3d3-5542ad9dcf1a",
-  "url": "/__l5e/assets-v1/d4b7429f-1234-48cb-96cf-4875f08615e3/bonus-3-whatsapp.png",
-  "r2_key": "a/v1/f4d1f203-f6d4-43ac-a3d3-5542ad9dcf1a/d4b7429f-1234-48cb-96cf-4875f08615e3/bonus-3-whatsapp.png",
-  "original_filename": "bonus-3-whatsapp.png",
-  "size": 1782694,
   "content_type": "image/png",
-  "created_at": "2026-06-10T15:14:13Z"
+  "created_at": "2026-06-10T15:14:13Z",
+  "original_filename": "bonus-3-whatsapp.png",
+  "project_id": "46041bbc-693f-4074-aa46-940675f039f1",
+  "r2_key": "a/v1/46041bbc-693f-4074-aa46-940675f039f1/d4b7429f-1234-48cb-96cf-4875f08615e3/bonus-3-whatsapp.png",
+  "size": 1782694,
+  "url": "/__l5e/assets-v1/d4b7429f-1234-48cb-96cf-4875f08615e3/bonus-3-whatsapp.png",
+  "version": 1
 }
