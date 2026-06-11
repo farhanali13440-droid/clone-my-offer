@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import productStack from "@/assets/product-stack.png.asset.json";
-import bumpStrategy from "@/assets/bump-strategy.png.asset.json";
-import bumpPrompts from "@/assets/bump-prompts.png.asset.json";
+const productStack = { url: "/assets/product-stack.png" };
+const bumpStrategy = { url: "/assets/bump-strategy.png" };
+const bumpPrompts = { url: "/assets/bump-prompts.png" };
 import { useMemo, useState } from "react";
 import { Topbar } from "@/components/site/Topbar";
 import { Footer } from "@/components/site/Footer";

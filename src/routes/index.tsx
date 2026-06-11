@@ -1,11 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import productStack from "@/assets/product-stack.png.asset.json";
-import clinicGrowthHeroStack from "@/assets/masterclass-banner.png.asset.json";
-import bonus1 from "@/assets/bonus-1-cheatsheet.png.asset.json";
-import bonus2 from "@/assets/bonus-2-worksheet.png.asset.json";
-import bonus3 from "@/assets/bonus-3-whatsapp.png.asset.json";
-import bonus4 from "@/assets/bonus-4-community.png.asset.json";
-import drAhmed from "@/assets/dr-ahmed.png.asset.json";
+const productStack = { url: "/assets/product-stack.png" };
+const clinicGrowthHeroStack = { url: "/assets/masterclass-banner.png" };
+const bonus1 = { url: "/assets/bonus-1-cheatsheet.png" };
+const bonus2 = { url: "/assets/bonus-2-worksheet.png" };
+const bonus3 = { url: "/assets/bonus-3-whatsapp.png" };
+const bonus4 = { url: "/assets/bonus-4-community.png" };
+const drAhmed = { url: "/assets/dr-ahmed.png" };
 import { useEffect, useState } from "react";
 import { fbqTrack } from "@/lib/fbpixel";
 import { Topbar } from "@/components/site/Topbar";
@@ -15,7 +15,7 @@ import {
   Star, ShieldCheck, CheckCircle2, PlayCircle, Lock, BadgeCheck, Volume2,
   Stethoscope, Users, TrendingUp, Calendar, Gift, Play, ChevronDown,
 } from "lucide-react";
-import farhanInstructor from "@/assets/farhan-instructor.jpeg.asset.json";
+const farhanInstructor = { url: "/assets/farhan-instructor.jpeg" };
 
 export const Route = createFileRoute("/")({
   head: () => ({
