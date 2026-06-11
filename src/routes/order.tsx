@@ -1,14 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-const productStack = { url: "/assets/product-stack.png" };
-const bumpStrategy = { url: "/assets/bump-strategy.png" };
-const bumpPrompts = { url: "/assets/bump-prompts.png" };
-import { useMemo, useState } from "react";
-import { Topbar } from "@/components/site/Topbar";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, ChevronDown, CreditCard, Gift, Lock, ShieldCheck, Star } from "lucide-react";
+
 import { Footer } from "@/components/site/Footer";
-import { Lock, ShieldCheck, Star, ArrowRight, Gift, ChevronDown, CreditCard } from "lucide-react";
+import { Topbar } from "@/components/site/Topbar";
 import { supabase } from "@/integrations/supabase/client";
 import { fbqTrack } from "@/lib/fbpixel";
-import { useEffect, useRef } from "react";
+
+const productStack = { url: "/assets/product-stack.png" };
+const bumpPornRecovery = { url: "/assets/bump-strategy.png" };
+const bumpReelsRecovery = { url: "/assets/bump-prompts.png" };
+
+const PRODUCT_NAME = "The Art of Habits & Discipline Mastery Seminar";
+const TRAINING_DATE = "Sunday | 07-June-2026";
+const TRAINING_TIME = "05:00 PM to 8:00 PM";
+const MAIN_PRODUCT = { title: PRODUCT_NAME, price: 999 };
 
 type OrderSearch = {
   full_name?: string;
@@ -22,8 +28,12 @@ export const Route = createFileRoute("/order")({
   }),
   head: () => ({
     meta: [
-      { title: "Checkout — Clinic Growth Masterclass" },
-      { name: "description", content: "Secure your seat in the Clinic Growth Masterclass for Rs. 999. Add high-converting order bumps to maximize your results." },
+      { title: `Checkout - ${PRODUCT_NAME}` },
+      {
+        name: "description",
+        content:
+          "Secure your seat in The Art of Habits & Discipline Mastery Seminar and add optional addiction recovery trainings.",
+      },
     ],
   }),
   component: OrderPage,
@@ -31,34 +41,34 @@ export const Route = createFileRoute("/order")({
 
 const BUMPS = [
   {
-    id: "strategy",
-    title: "1-on-1 Personalized Digital Marketing Strategy Session",
-    price: 3999,
-    image: bumpStrategy.url,
-    badge: "Most Popular (8/10 Members Add This)",
+    id: "porn-recovery",
+    title: "Porn Addiction Recovery Training",
+    price: 1499,
+    image: bumpPornRecovery.url,
+    badge: "Private Deep-Dive Add On",
     bullets: [
-      "90-Minute Private Strategy Session",
-      "Customized Patient Growth Plan",
-      "Meta Ads & Digital Marketing Guidance",
-      "Website & Online Presence Review",
-      "15 Days WhatsApp Support",
+      "Understand the trigger-craving-relapse loop",
+      "Build a practical relapse-prevention plan",
+      "Replace shame with a clear recovery system",
+      "Daily rules for urges, boredom and late-night triggers",
+      "Rebuild confidence, self-respect and focus",
     ],
-    bonus: "Bonus: Professional Clinic Website Setup",
+    bonus: "Bonus: 7-Day Recovery Reset Checklist",
   },
   {
-    id: "prompts",
-    title: "AI Content Prompt Vault for Doctors",
-    price: 699,
-    image: bumpPrompts.url,
-    badge: "Recommended (7/10 Members Add This)",
+    id: "reels-recovery",
+    title: "Reels & Social Media Addiction Recovery Training",
+    price: 999,
+    image: bumpReelsRecovery.url,
+    badge: "Recommended For Screen-Time Control",
     bullets: [
-      "Ready-to-use AI prompts for doctors",
-      "Content ideas for social media",
-      "Patient education content prompts",
-      "Engagement and lead generation prompts",
-      "Save hours of content creation time",
+      "Stop losing hours to Instagram, TikTok and YouTube Shorts",
+      "Set up your phone to protect your attention",
+      "Use the 24-hour dopamine reset plan",
+      "Replace scrolling with productive default actions",
+      "Create boundaries without deleting your whole digital life",
     ],
-    bonus: null as string | null,
+    bonus: "Bonus: Screen-Time Control Checklist",
   },
 ] as const;
 
@@ -67,8 +77,6 @@ const PAYMENT_ACCOUNTS = {
   jazzcash: { label: "JazzCash", name: "Farhan Ali Rasheed", account: "03135944817" },
 } as const;
 type PayMethod = keyof typeof PAYMENT_ACCOUNTS;
-
-const MAIN_PRODUCT = { title: "Clinic Growth Masterclass", price: 999 };
 
 function OrderPage() {
   const search = Route.useSearch();
@@ -81,7 +89,7 @@ function OrderPage() {
   const purchaseFiredRef = useRef(false);
 
   useEffect(() => {
-    fbqTrack("InitiateCheckout", { value: 999, currency: "PKR" });
+    fbqTrack("InitiateCheckout", { value: MAIN_PRODUCT.price, currency: "PKR" });
   }, []);
 
   const items = useMemo(() => {
@@ -121,24 +129,25 @@ function OrderPage() {
       console.error("Failed to save lead", err);
     }
 
-    // Fire Lead event (form submission)
     fbqTrack("Lead", { value: total, currency: "PKR" });
 
-    // Fire Purchase event (dedup-guarded)
     if (!purchaseFiredRef.current) {
       purchaseFiredRef.current = true;
-      fbqTrack("Purchase", { value: 999, currency: "PKR" });
+      fbqTrack("Purchase", { value: MAIN_PRODUCT.price, currency: "PKR" });
     }
 
-    // Give the pixel a moment to flush before opening WhatsApp
     await new Promise((r) => setTimeout(r, 350));
 
     const message =
       `Assalam-o-Alaikum,\n\n` +
-      `I have paid the fee for the Clinic Growth Masterclass.\n` +
+      `I have paid the fee for ${PRODUCT_NAME}.\n` +
       `My payment screenshot is attached.\n\n` +
       `Name: ${name}\n` +
-      `Email: ${email}\n\n` +
+      `Email: ${email}\n` +
+      `WhatsApp: ${phone}\n` +
+      `Payment Method: ${PAYMENT_ACCOUNTS[paymentMethod].label}\n` +
+      `Total Amount: Rs. ${total.toLocaleString()}\n` +
+      `Selected Add Ons: ${selectedBumps.length ? selectedBumps.map((b) => b.title).join(", ") : "None"}\n\n` +
       `Please verify my payment and provide access.\n\n` +
       `Thank you.`;
     const waUrl = `https://wa.me/923390057379?text=${encodeURIComponent(message)}`;
@@ -150,25 +159,23 @@ function OrderPage() {
     <div className="min-h-screen flex flex-col">
       <Topbar />
 
-      {/* Headline strip */}
       <div className="bg-secondary border-b">
         <div className="mx-auto max-w-6xl px-4 py-8 text-center">
           <h1 className="text-2xl md:text-4xl font-black">
-            You're <span className="gradient-highlight">One Step Away</span> From Filling Your Clinic
+            You're <span className="gradient-highlight">One Step Away</span> From Mastering Your Habits
           </h1>
-          <p className="mt-2 text-muted-foreground">Complete your order below to reserve your seat in the live masterclass.</p>
+          <p className="mt-2 text-muted-foreground">
+            Complete your order below to reserve your seat in the live discipline seminar.
+          </p>
         </div>
       </div>
 
       <main className="bg-secondary flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 grid lg:grid-cols-5 gap-8">
-          {/* LEFT: form + bumps */}
           <form className="lg:col-span-3 space-y-6" onSubmit={handleSubmit}>
-
-            {/* Contact */}
             <section className="bg-card rounded-xl shadow-sm border">
               <div className="bg-primary text-primary-foreground px-5 py-3 rounded-t-xl font-bold text-center uppercase tracking-wider text-sm">
-                Step 1 — Your Contact Info
+                Step 1 - Your Contact Info
               </div>
               <div className="p-5 space-y-3">
                 <input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name*" className="w-full rounded-md border border-input bg-background px-4 py-3 outline-none focus:ring-2 focus:ring-ring" />
@@ -177,7 +184,6 @@ function OrderPage() {
               </div>
             </section>
 
-            {/* Items table */}
             <section className="bg-card rounded-xl shadow-sm border p-5">
               <div className="text-sm font-bold uppercase tracking-wider mb-3">Your Order</div>
               <table className="w-full text-sm">
@@ -196,14 +202,10 @@ function OrderPage() {
               </table>
             </section>
 
-            {/* Order Bumps */}
             {BUMPS.map((b) => {
               const checked = !!bumps[b.id];
               return (
-                <label
-                  key={b.id}
-                  className={`block rounded-xl border-2 border-dashed cursor-pointer p-4 transition ${checked ? "border-emerald-500 bg-emerald-50" : "border-yellow-500 bg-yellow-50"}`}
-                >
+                <label key={b.id} className={`block rounded-xl border-2 border-dashed cursor-pointer p-4 transition ${checked ? "border-emerald-500 bg-emerald-50" : "border-yellow-500 bg-yellow-50"}`}>
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
@@ -215,16 +217,11 @@ function OrderPage() {
                       <div className="flex items-start gap-2">
                         <ArrowRight className="size-5 text-red-600 shrink-0 mt-0.5" />
                         <div className="font-extrabold text-emerald-800 uppercase text-sm md:text-base">
-                          ✅ YES! Add {b.title} for just PKR {b.price.toLocaleString()}
+                          YES! Add {b.title} for just PKR {b.price.toLocaleString()}
                         </div>
                       </div>
                       <div className="mt-3">
-                        <img
-                          src={b.image}
-                          alt={b.title}
-                          className="w-full h-auto rounded-lg object-cover border border-emerald-200"
-                          loading="lazy"
-                        />
+                        <img src={b.image} alt={b.title} className="w-full h-auto rounded-lg object-cover border border-emerald-200" loading="lazy" />
                       </div>
                       <div className="mt-3">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 text-white text-xs font-bold px-3 py-1 shadow-sm">
@@ -236,22 +233,20 @@ function OrderPage() {
                         <p className="font-bold underline mb-2">SPECIAL ONE-TIME OFFER:</p>
                         <ul className="space-y-1">
                           {b.bullets.map((line) => (
-                            <li key={line}>✅ {line}</li>
+                            <li key={line}>- {line}</li>
                           ))}
-                          {b.bonus && <li className="font-semibold text-emerald-800 mt-1">🎁 {b.bonus}</li>}
+                          <li className="font-semibold text-emerald-800 mt-1">{b.bonus}</li>
                         </ul>
                       </div>
                     </div>
-
                   </div>
                 </label>
               );
             })}
 
-            {/* Payment */}
             <section className="bg-card rounded-xl shadow-lg border-2 border-primary/40 ring-2 ring-primary/10 overflow-hidden">
               <div className="bg-primary text-primary-foreground px-5 py-3 font-bold text-center uppercase tracking-wider text-sm">
-                Step 3 — Payment Method
+                Step 3 - Payment Method
               </div>
               <div className="p-5 space-y-4">
                 <div>
@@ -265,11 +260,10 @@ function OrderPage() {
                       onChange={(e) => setPaymentMethod(e.target.value as PayMethod)}
                       className="appearance-none w-full rounded-xl border-2 border-primary bg-gradient-to-br from-primary/5 to-primary/10 px-4 py-4 pr-12 text-base font-bold text-foreground shadow-md outline-none focus:ring-4 focus:ring-primary/30 hover:shadow-lg transition cursor-pointer"
                     >
-                      <option value="easypaisa">📱 Easypaisa</option>
-                      <option value="jazzcash">📲 JazzCash</option>
+                      <option value="easypaisa">Easypaisa</option>
+                      <option value="jazzcash">JazzCash</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 size-5 text-primary" />
-                    <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-primary/20 animate-pulse" aria-hidden />
                   </div>
                 </div>
 
@@ -290,16 +284,14 @@ function OrderPage() {
                 </div>
 
                 <div className="rounded-lg border-l-4 border-yellow-500 bg-yellow-50 p-4 text-sm text-slate-800">
-                  <p className="font-bold mb-1">📌 Important Instructions</p>
+                  <p className="font-bold mb-1">Important Instructions</p>
                   <p>
-                    Please send your payment to the selected account above and then send the payment screenshot
-                    to our WhatsApp number by clicking on the button below. Your access will be processed after payment verification.
+                    Please send your payment to the selected account above and then send the payment screenshot to our WhatsApp number by clicking the button below.
                   </p>
                 </div>
               </div>
             </section>
 
-            {/* Summary + submit */}
             <section className="bg-card rounded-xl shadow-sm border p-5">
               <div className="text-sm font-bold uppercase tracking-wider mb-3">Order Summary</div>
               <div className="space-y-2 text-sm">
@@ -318,32 +310,22 @@ function OrderPage() {
               <button type="submit" disabled={submitting} className="btn-cta w-full mt-5 px-6 py-4 text-base md:text-lg">
                 {submitting ? "OPENING WHATSAPP..." : "SEND PAYMENT SCREENSHOT & GET ACCESS"}
                 <div className="text-xs font-medium normal-case tracking-normal opacity-95">
-                  Click here to send your payment screenshot on WhatsApp and receive instant masterclass access.
+                  Click here to send your payment screenshot on WhatsApp and receive seminar access.
                 </div>
               </button>
-
 
               <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                 <Lock className="size-3.5" /> 100% Secure &amp; Safe Payments
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">
-                <strong>Your information is secure</strong> and will not be shared. By providing your information you consent to the
-                collection and use of your information per our Terms of Use and Privacy Policy. Opt-out anytime.
-              </p>
             </section>
           </form>
 
-          {/* RIGHT: product card */}
           <aside className="lg:col-span-2 space-y-6">
             <div className="bg-card rounded-xl shadow-sm border overflow-hidden">
               <div className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-center py-3 font-black uppercase tracking-wider">
-                Clinic Growth Masterclass
+                Habits & Discipline Mastery
               </div>
-              <img
-                src={productStack.url}
-                alt="Clinic Growth Masterclass"
-                className="w-full h-auto"
-              />
+              <img src={productStack.url} alt={PRODUCT_NAME} className="w-full h-auto" />
               <div className="p-5 text-center">
                 <div className="text-lg font-bold">Get Access For</div>
                 <div className="text-3xl font-black text-emerald-600 mt-1 whitespace-pre-line">{"Only\nRs. 999 Today!"}</div>
@@ -353,52 +335,44 @@ function OrderPage() {
                     Here's Everything You Get:
                   </div>
                   <ul className="mt-3 space-y-3 text-sm">
-                    <Item title="Clinic Growth Masterclass (Live on Zoom)">
-                      The complete patient-acquisition blueprint that eliminates months of guesswork.
-                      Get the exact patient-getting system, ad strategy, and follow-up flow used by leading
-                      Pakistani clinics — delivered live on Saturday, 20th June 2026.
+                    <Item title="Live Habits & Discipline Mastery Seminar">
+                      A practical 3-hour training to break bad habits, defeat procrastination, control screen addiction and build daily discipline.
                     </Item>
-
-                    <div className="bg-emerald-600 text-white text-center font-bold py-2 rounded mt-4">
-                      You'll Also Receive 4 Bonuses:
-                    </div>
-                    <Item title="Bonus #1 — Authority Content Cheat Sheet for Doctors">
-                      30 ready-to-use post ideas to position you as the go-to specialist online.
+                    <Item title="Training Date & Time">
+                      {TRAINING_DATE} - {TRAINING_TIME}.
                     </Item>
-                    <Item title="Bonus #2 — Doctor Personal Brand Positioning Worksheet">
-                      Define your niche and unique angle so patients instantly trust and pick you.
+                    <Item title="30-Day Discipline Action Plan">
+                      Leave with a simple execution map so you know exactly what to do after the seminar.
                     </Item>
-                    <Item title="Bonus #3 — Clinic WhatsApp Follow-Up Scripts">
-                      Plug-and-play scripts that turn inquiries into booked appointments — fast.
+                    <Item title="Habit Tracker & Screen-Time Checklist">
+                      Simple tools to track progress and protect your attention from useless scrolling.
                     </Item>
-                    <Item title="Bonus #4 — Private Doctor Growth Community">
-                      Ongoing support, case studies and Q&amp;A with ambitious doctors growing their clinics.
+                    <Item title="Live Q&A With Farhan Ali">
+                      Get your habit, discipline and addiction-control questions answered live.
                     </Item>
                   </ul>
                 </div>
               </div>
             </div>
 
-            {/* Guarantee */}
             <div className="bg-card rounded-xl border p-5 flex items-start gap-4">
               <div className="size-14 rounded-full bg-yellow-400 grid place-items-center shrink-0">
                 <ShieldCheck className="size-7 text-hero-deep" />
               </div>
               <div>
-                <h3 className="font-extrabold">30-Day Money-Back Guarantee</h3>
+                <h3 className="font-extrabold">100% Money-Back Guarantee</h3>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Attend, take notes, implement — and if you feel it didn't help, email us within 30 days for a 100% refund.
+                  Attend, apply the action plan, and if you honestly feel it was not worth it, message us for a refund.
                 </p>
               </div>
             </div>
 
-            {/* Testimonials */}
             <div className="bg-card rounded-xl border p-5">
-              <div className="font-bold mb-3">Reviews From Happy Doctors</div>
+              <div className="font-bold mb-3">What This Helps You Build</div>
               {[
-                { n: "Dr. Sara K., Dentist", t: "We went from 8 to 26 booked appointments per week." },
-                { n: "Dr. Bilal R., Cardiologist", t: "Finally a Pakistan-specific marketing system. No fluff." },
-                { n: "Dr. Hina M., Dietitian", t: "My DMs are full of qualified patients. Worth 10x the price." },
+                { n: "Better focus", t: "Stop leaking attention to every notification and short video." },
+                { n: "More consistency", t: "Follow through even when motivation is low." },
+                { n: "Stronger self-control", t: "Create rules and systems that protect your future self." },
               ].map((r) => (
                 <div key={r.n} className="border-t first:border-t-0 py-3">
                   <div className="flex gap-0.5 text-yellow-500">

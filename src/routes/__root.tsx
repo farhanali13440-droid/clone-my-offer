@@ -77,18 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Clinic Growth Masterclass 2" },
-      { name: "description", content: "Get 20/25 Patients per week via digital marketing" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Clinic Growth Masterclass 2" },
-      { property: "og:description", content: "Get 20/25 Patients per week via digital marketing" },
+      { title: "The Art of Habits & Discipline Mastery Seminar" },
+      { name: "description", content: "Live training by Farhan Ali to break laziness, procrastination, porn addiction, reel addiction and build discipline that actually sticks." },
+      { name: "author", content: "Farhan Ali" },
+      { property: "og:title", content: "The Art of Habits & Discipline Mastery Seminar" },
+      { property: "og:description", content: "A live 3-hour seminar to help you destroy bad habits, build discipline, control your screen time and become consistent." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Clinic Growth Masterclass 2" },
-      { name: "twitter:description", content: "Get 20/25 Patients per week via digital marketing" },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/sEGIV8sMycbJuv6jJyxdfCEW4pj1/social-images/social-1781086772511-Black_Logo_(3).webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/sEGIV8sMycbJuv6jJyxdfCEW4pj1/social-images/social-1781086772511-Black_Logo_(3).webp" },
+      { property: "og:image", content: "/assets/product-stack.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "The Art of Habits & Discipline Mastery Seminar" },
+      { name: "twitter:description", content: "Break bad habits. Build discipline. Take back control of your time, energy and focus." },
+      { name: "twitter:image", content: "/assets/product-stack.png" },
     ],
     links: [
       {
@@ -137,7 +136,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
